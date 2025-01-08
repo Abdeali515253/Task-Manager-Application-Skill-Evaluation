@@ -20,6 +20,6 @@ A task manager app that helps you manage tasks efficiently. This project also in
 4. Start the React app:
    ```bash
    npm start
-5. Start the json server
+5. Open a new terminal and Start the json server
    ```bash
    json-server --watch db.json --port 3001
