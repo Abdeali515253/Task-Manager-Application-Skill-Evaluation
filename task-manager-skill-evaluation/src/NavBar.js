@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, logoutUser } from "./features/userSlice";
+import "./styles/navbar.css"
 
 const NavBar = () => {
 
@@ -16,14 +17,19 @@ const NavBar = () => {
 
     return (
         <>
-            {!user && <nav>
-                <Link to="/signup">Sign Up</Link>
-                <Link to="/signin">Sign In</Link>
-            </nav>}
-            {user && <nav>
-                <Link to="/">Home</Link>
-                <Link onClick={handleLogout}>Log out</Link>
-            </nav>}
+            <nav className="navbar">
+                {!user ? (
+                    <div className="navbar-links">
+                        <Link to="/signup" className="navbar-link">Sign Up</Link>
+                        <Link to="/signin" className="navbar-link">Sign In</Link>
+                    </div>
+                ) : (
+                    <div className="navbar-links">
+                        <Link to="/" className="navbar-link">Home</Link>
+                        <button className="navbar-link logout-button" onClick={handleLogout}>Log out</button>
+                    </div>
+                )}
+            </nav>
         </>
     );
 }

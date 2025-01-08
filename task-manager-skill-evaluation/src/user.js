@@ -3,6 +3,7 @@ import { selectUser } from "./features/userSlice";
 import { addTask, fetchTasks } from './features/taskSlice';
 import { useEffect, useState } from "react";
 import Fuse from "fuse.js";
+import './styles/user.css'
 
 const User = () => {
 
@@ -73,88 +74,102 @@ const User = () => {
 
     return (
         <>
-        {user ? (<div>
-            {user.email}
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="title">title:</label>
-                        <input
-                            type="text"
-                            id="title"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="description">description:</label>
-                        <input
-                            type="description"
-                            id="description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="assignedTo">Assigned to:</label>
-                        <select
-                            id="assignedTo"
-                            value={assignedTo}
-                            onChange={(e) => setAssignedTo(e.target.value)}
-                        >
-                            <option value={""} />
-                            {allUsers.map((aUser) => (
-                                <option key={aUser.id} value={aUser.email}>
-                                    {aUser.email}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label htmlFor="priority">priority</label>
-                        <input
-                            type="number"
-                            id="priority"
-                            value={priority}
-                            onChange={(e) => setPriority(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="dateCreated">dateCreated</label>
-                        <input
-                            type="date"
-                            id="dateCreated"
-                            value={dateCreated}
-                            onChange={(e) => setDateCreated(e.target.value)}
-                        />
-                    </div>
-                    <button type="submit">Add Task</button>
-                </form>
-                {status === 'loading' && <p>Loading...</p>}
-                {status === 'succeeded' &&
-                    <>
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        value={query}
-                        onChange={handleSearch}
-                    />
-                        {results.map((task) => (
-                            <div key={task.id} style={{borderStyle: "solid", borderWidth: 1}}>
-                                <h3>{task.title}</h3>
-                                <p>{task.createdBy}</p>
-                                <p>{task.description}</p>
+            {user ? (
+                <div className="task-container">
+                    <p className="user-email">{user.email}</p>
+                    <form className="task-form" onSubmit={handleSubmit}>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label htmlFor="title">Title:</label>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
                             </div>
-                        ))}
-                    </>
-                }
-                {status === 'failed' && <p>Error loading users.</p>}
-        </div>) : (
-            (<div>
-                welcome please sign up or sign in to view tasks
-            </div>)
-        )}
+                            <div className="form-group">
+                                <label htmlFor="description">Description:</label>
+                                <input
+                                    type="text"
+                                    id="description"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label htmlFor="assignedTo">Assigned to:</label>
+                                <select
+                                    id="assignedTo"
+                                    value={assignedTo}
+                                    onChange={(e) => setAssignedTo(e.target.value)}
+                                >
+                                    <option value="">Select user</option>
+                                    {allUsers.map((aUser) => (
+                                        <option key={aUser.id} value={aUser.email}>
+                                            {aUser.email}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="priority">Priority:</label>
+                                <input
+                                    type="number"
+                                    id="priority"
+                                    value={priority}
+                                    onChange={(e) => setPriority(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label htmlFor="dateCreated">Date Created:</label>
+                                <input
+                                    type="date"
+                                    id="dateCreated"
+                                    value={dateCreated}
+                                    onChange={(e) => setDateCreated(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <button type="submit" className="submit-button">Add Task</button>
+                    </form>
+
+                    {status === "loading" && <p>Loading...</p>}
+
+                    {status === "succeeded" && (
+                        <>
+                            <input
+                                type="text"
+                                className="search-input"
+                                placeholder="Search..."
+                                value={query}
+                                onChange={handleSearch}
+                            />
+                            <div className="task-list">
+                                {results.map((task) => (
+                                    <div key={task.id} className="task-card">
+                                        <h3>{task.title}</h3>
+                                        <p>Created by: {task.createdBy}</p>
+                                        <p>{task.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
+
+                    {status === "failed" && <p>Error loading users.</p>}
+                </div>
+            ) : (
+                <div className="welcome-message">
+                    Welcome! Please sign up or sign in to view tasks.
+                </div>
+            )}
         </>
+
     );
 }
 
